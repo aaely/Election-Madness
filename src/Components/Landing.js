@@ -11,6 +11,7 @@ import Ethereum from '../Images/Ethereum.jpg'
 import Bitcoin from '../Images/Bitcoin.jpg'
 import getLiveCoinPrice from '../queries/getLiveCoinPrice'
 import getLiveETHUSD from '../queries/getLiveETHUSD'
+import loadNetID from '../utils/loadNetID'
   
 
 
@@ -22,7 +23,8 @@ export default class Dashboard extends Component {
             tabId: 0,
             account: '',
             bitcoinPrice: 0,
-            ethereumPrice: 0
+            ethereumPrice: 0,
+            networkId: 0
         }
     }
 
@@ -30,10 +32,14 @@ export default class Dashboard extends Component {
         try {
             await loadWeb3();
             const account = await loadAccount();
+            const networkId = await loadNetID();
+            this.setState({
+                account, networkId
+            })
             const bitcoinPrice = await getLiveCoinPrice();
             const ethereumPrice = await getLiveETHUSD();
             this.setState({
-                account, bitcoinPrice, ethereumPrice
+                bitcoinPrice, ethereumPrice
             })
         }
         catch(error) {
@@ -65,19 +71,16 @@ export default class Dashboard extends Component {
                 <br />
                 <p>Due to necessity, above this text is a picture of what you will see if you click the Metamask link above</p>
                 <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginTop: '10px'}} >I Have Metamask</Button>
-                <h5 style={{marginTop: '10%'}}>Tip Ethereum</h5>
-                <img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} />
-                <h5 style={{marginTop: '10%'}}>Tip Bitcoin</h5>
-                <img src={Bitcoin} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} />
             </div>
         )
     }
 
-    renderGoerli = () => {
+    renderGoerliFailure = () => {
         return(
             <div>
                 <h3>You will need to set metamask to the Goerli Network</h3>
                 <br />
+                {this.state.networkId !== 5 && <h3 style={{backgroundColor: 'red'}} >You are not connected to the correct network <br /> Please connect to the Goerli network and refresh the page</h3>}
                 <h5>Step 1:</h5>
                 <br />
                 <img src={img2} alt='Metamask 2' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
@@ -87,7 +90,17 @@ export default class Dashboard extends Component {
                 <img src={img3} alt='Metamask 3' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
                 <br />
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
-                <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >I Have Metamask</Button>
+                {this.state.networkId === 5 && <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >I am on Goerli</Button>}
+            </div>
+        )
+    }
+
+    renderGoerliSuccess = () => {
+        return(
+            <div>
+                <h3>You are currently connected to the Goerli Network, please proceed to get funds</h3>
+                <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
+                {this.state.networkId === 5 && <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Proceed</Button>}
             </div>
         )
     }
@@ -124,8 +137,13 @@ export default class Dashboard extends Component {
                 <tbody>
                     <tr>
                         <td>BTC</td>
-                        <td>{Bitcoin}</td>
+                        <td><img src={Bitcoin} alt='bitcoin' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
                         <td> ${this.state.bitcoinPrice} </td>
+                    </tr>
+                    <tr>
+                        <td>ETH</td>
+                        <td><img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
+                        <td> ${this.state.ethereumPrice} </td>
                     </tr>
                 </tbody>
             </Table>
@@ -140,10 +158,12 @@ export default class Dashboard extends Component {
                 <br />
                 <div style={{textAlign: 'center'}} >
                     {this.state.tabId === 0 && this.renderMetamaskLink()}
-                    {this.state.tabId === 1 && this.renderGoerli()}
+                    {this.state.tabId === 1 && this.state.networkId === 5 && this.renderGoerliSuccess()}
+                    {this.state.tabId === 1 && this.state.networkId !== 5 && this.renderGoerliFailure()}
                     {this.state.tabId === 2 && this.renderLink()}
                     {this.state.tabId === 3 && <Link to='/Dashboard' style={{fontSize: '40px'}} >Proceed to Register</Link>}
-                    {this.renderTipTable()}
+                    {this.state.tabId === 3 && <h3 style={{textAlign: 'center', marginTop: '10%'}}>Tips Appreciated </h3> }
+                    {this.state.tabId === 3 && this.renderTipTable()}
                 </div>
             </div>
         )

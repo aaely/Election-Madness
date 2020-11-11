@@ -27,7 +27,7 @@ export default class RegistrationForm extends Component {
 
     registerVoter = async () => {
         try {
-            this.props.election.methods.createVoter(this.state.voterName).send({from: this.props.account})
+            await this.props.election.methods.createVoter(this.state.voterName).send({from: this.props.account})
         } catch(error) {
             console.log(error);
         }

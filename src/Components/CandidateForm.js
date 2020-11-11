@@ -34,7 +34,6 @@ export default class CandidateForm extends Component {
 
     createCandidate = async () => {
         try{
-            console.log(this.state)
             this.setState({ loading: true})
             await this.props.election.methods.createCandidate(this.state.candidateName, this.state.candidateParty).send({ from: this.props.account })
         } catch(error) {

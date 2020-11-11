@@ -39,11 +39,11 @@ export default class Dashboard extends Component {
 
     async componentDidMount() {
         try {
+            await this.loadWeb3();
+            await this.loadBlockchainData();
             const coindeskPrice = await getLiveCoindeskPrice();
             const coinapiPrice = await getLiveCoinPrice();
             const ethUSD = await getLiveETHUSD();
-            await this.loadWeb3();
-            await this.loadBlockchainData();
             this.setState({
                 coindeskPrice,
                 coinapiPrice,
@@ -125,6 +125,25 @@ export default class Dashboard extends Component {
             </span>
         )
     }
+
+    renderTipTable = () => {
+        return(
+            <Table striped style={{textAlign:'center', marginLeft: 'auto', marginRight: 'auto'}} >
+                <thead>
+                    <tr>
+                        <th>Bitcoin</th>
+                        <th>Ethereum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src={Bitcoin} alt='bitcoin' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
+                        <td><img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
+                    </tr>
+                </tbody>
+            </Table>
+        )
+    }
     
     render() {
         
@@ -143,69 +162,8 @@ export default class Dashboard extends Component {
                 Attempting to vote more than once will also result in an error. <br />
                 </strong></h1>
                 <br />
-                <h3 style={{textAlign: 'center', marginTop: '30%'}}><strong>Live Exchange Prices</strong></h3>
-                <Table striped>
-                    <thead>
-                        <tr>
-                            <th>Source</th>
-                            <th>Coin</th>
-                            <th>Currnecy</th>
-                            <th>Exchange Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                CoinDesk
-                            </td>
-                            <td>
-                                BTC
-                            </td>
-                            <td>
-                                USD
-                            </td>
-                            <td>
-                                ${parseFloat(this.state.coindeskPrice).toFixed(2)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                CoinAPI.io
-                            </td>
-                            <td>
-                                BTC
-                            </td>
-                            <td>
-                                USD
-                            </td>
-                            <td>
-                                ${parseFloat(this.state.coinapiPrice).toFixed(2)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                CoinAPI.io
-                            </td>
-                            <td>
-                                ETH
-                            </td>
-                            <td>
-                                USD
-                            </td>
-                            <td>
-                                ${parseFloat(this.state.ethUSD).toFixed(2)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} />
-                            </td>
-                            <td>
-                                <img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} />
-                            </td>
-                        </tr>
-                    </tbody>
-                </Table>
+                <h3 style={{textAlign: 'center', marginTop: '10%'}}><strong>Tip Addresses</strong></h3>
+                {this.renderTipTable()}
             </div>
         )
     }
