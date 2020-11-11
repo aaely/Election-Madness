@@ -70,10 +70,8 @@ export default class Dashboard extends Component {
                 <br />
                 <a href='https://play.google.com/store/apps/details?id=org.toshi' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}}>Coinbase Wallet</a>
                 <br />
-                <p style={{marginTop: '10px'}} >Due to necessity, below this text is a picture of what you will see if you click the Metamask link above</p>
                 <img src={img1} alt='Metamask' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
                 <br />
-                <p>Due to necessity, above this text is a picture of what you will see if you click the Metamask link above</p>
                 <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginTop: '10px'}} >I Have Metamask</Button>
             </div>
         )
