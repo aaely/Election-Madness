@@ -50,11 +50,11 @@ export default class Dashboard extends Component {
             <div style={{textAlign: 'center'}} >
                 <h3>You will need MetaMask in order to participate. It is a simple browser extension and can be found here:</h3> 
                 <br />
-                <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn' target='_blank' rel="noreferrer" style={{fontSize: '24px'}} >MetaMask</a>
+                <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}} >MetaMask</a>
                 <br />
-                <img src={img1} alt='Metamask' style={{marginLeft: 'auto', marginRight: 'auto'}} />
+                <img src={img1} alt='Metamask' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
                 <br />
-                <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto'}} >I Have Metamask</Button>
+                <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginTop: '10px'}} >I Have Metamask</Button>
             </div>
         )
     }
@@ -66,11 +66,11 @@ export default class Dashboard extends Component {
                 <br />
                 <h5>Step 1:</h5>
                 <br />
-                <img src={img2} alt='Metamask 2' style={{marginLeft: 'auto', marginRight: 'auto'}} />
+                <img src={img2} alt='Metamask 2' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
                 <br />
                 <h5>Step 2:</h5>
                 <br />
-                <img src={img3} alt='Metamask 3' style={{marginLeft: 'auto', marginRight: 'auto'}} />
+                <img src={img3} alt='Metamask 3' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
                 <br />
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
                 <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >I Have Metamask</Button>
@@ -112,6 +112,4 @@ export default class Dashboard extends Component {
             </div>
         )
     }
-
-
 }

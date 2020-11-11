@@ -131,11 +131,15 @@ export default class Dashboard extends Component {
                 <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Please register first if you have not. <br /> Attemping to register the same account will result in an error.</strong></h1>
                 {this.state.account === '0xBcA3320e93C54513A467Bb517dC25f9Eba15e779' && <CandidateForm election={this.state.election} account={this.state.account} />}
                 <br />
+                <h3><a href='https://goerli-faucet.slock.it/' target='_blank' ref='noreferrer'> Need More Funds?</a></h3>
+                <br />
                 <RegistrationForm election={this.state.election} account={this.state.account} />
                 <br />
                 <Candidates candidates={this.state.candidates} election={this.state.election} account={this.state.account} />
                 <br />
-                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Attempting to vote without registering will result in an error.</strong></h1>
+                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Attempting to vote without registering will result in an error. <br />
+                Attempting to vote more than once will also result in an error. <br />
+                </strong></h1>
                 <br />
                 <h3 style={{textAlign: 'center', marginTop: '30%'}}><strong>Live Exchange Prices</strong></h3>
                 <Table striped>
