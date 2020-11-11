@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import loadWeb3 from '../utils/loadWeb3'
 import { Link } from 'react-router-dom'
 import { BsPlus, BsFileText } from 'react-icons/bs'
 import { RiExchangeDollarFill } from 'react-icons/ri'
@@ -29,15 +30,16 @@ export default class Dashboard extends Component {
             voters: [],
             election: null,
             candidateCount: 0,
-            voterCount: 0
+            voterCount: 0,
+            tabId: 0
         }
     }
 
     async componentDidMount() {
         try {
-            const coindeskPrice = await this.getLiveCoindeskPrice();
-            const coinapiPrice = await this.getLiveCoinPrice();
-            const ethUSD = await this.getLiveETHUSD();
+            const coindeskPrice = await getLiveCoindeskPrice();
+            const coinapiPrice = await getLiveCoinPrice();
+            const ethUSD = await getLiveETHUSD();
             await this.loadWeb3();
             await this.loadBlockchainData();
             this.setState({
@@ -95,16 +97,21 @@ export default class Dashboard extends Component {
               })
           }
         } else {
-          window.alert('SocialNetwork contract not deployed to detected network.')
+          window.alert('Election contract not deployed to detected network.')
         }
         console.log(this.state)
       }
+
+    isAccountRegistered = async () => {
+        const response = await this.state.election.methods.regVoters(this.state.account).send({from: this.state.account})
+        console.log(response)
+    }
 
     renderMetamaskLink = () => {
         return(
             <span style={{textAlign: 'center', backgroundColor: 'red', fontSize: '24px'}} >
                 You will need MetaMask in order to participate. It is a simple browser extension and can be found here: <br />
-                <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn' style={{backgroundColor: 'black', color: 'red'}} >MetaMask</a>
+                <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn' target='_blank' style={{backgroundColor: 'black', color: 'red'}} >MetaMask</a>
             </span>
         )
     }
@@ -112,7 +119,7 @@ export default class Dashboard extends Component {
     renderLink = () => {
         return(
             <span style={{textAlign: 'center', backgroundColor: 'red', fontSize: '24px'}} >
-                No funds to register or vote? Go <a href='https://goerli-faucet.slock.it/' style={{backgroundColor: 'black', color: 'yellow'}} >here</a> and copy this value-- <strong style={{fontSize: '30px'}} >{this.state.account}</strong>-- into the input field to request funds!
+                No funds to register or vote? Go <a href='https://goerli-faucet.slock.it/' target='_blank' style={{backgroundColor: 'black', color: 'yellow'}} >here</a> and copy this value-- <strong style={{fontSize: '30px'}} >{this.state.account}</strong>-- into the input field to request funds!
             </span>
         )
     }
@@ -121,18 +128,14 @@ export default class Dashboard extends Component {
         
           return(
             <div style={{marginLeft: '5%', marginRight: '5%', marginTop: '3%'}} >
-                <h1 style={{textAlign: 'center'}}>Welcome to Election-Madness</h1>
+                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Please register first if you have not. <br /> Attemping to register the same account will result in an error.</strong></h1>
+                {this.state.account === '0xBcA3320e93C54513A467Bb517dC25f9Eba15e779' && <CandidateForm election={this.state.election} account={this.state.account} />}
                 <br />
-                <div style={{textAlign: 'center'}} >
-                    {this.renderLink()}
-                    <br />
-                    {this.renderMetamaskLink()}
-                </div>
-                <CandidateForm election={this.state.election} account={this.state.account} />
+                <RegistrationForm election={this.state.election} account={this.state.account} />
                 <br />
                 <Candidates candidates={this.state.candidates} election={this.state.election} account={this.state.account} />
                 <br />
-                <RegistrationForm election={this.state.election} account={this.state.account} />
+                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Attempting to vote without registering will result in an error.</strong></h1>
                 <br />
                 <h3 style={{textAlign: 'center', marginTop: '30%'}}><strong>Live Exchange Prices</strong></h3>
                 <Table striped>
@@ -156,7 +159,7 @@ export default class Dashboard extends Component {
                                 USD
                             </td>
                             <td>
-                                ${this.state.coindeskPrice}
+                                ${parseFloat(this.state.coindeskPrice).toFixed(2)}
                             </td>
                         </tr>
                         <tr>
@@ -170,7 +173,7 @@ export default class Dashboard extends Component {
                                 USD
                             </td>
                             <td>
-                                ${this.state.coinapiPrice}
+                                ${parseFloat(this.state.coinapiPrice).toFixed(2)}
                             </td>
                         </tr>
                         <tr>
@@ -184,7 +187,7 @@ export default class Dashboard extends Component {
                                 USD
                             </td>
                             <td>
-                                ${this.state.ethUSD}
+                                ${parseFloat(this.state.ethUSD).toFixed(2)}
                             </td>
                         </tr>
                     </tbody>

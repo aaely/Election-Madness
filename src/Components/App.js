@@ -9,6 +9,7 @@ import {
 } from 'recoil';
 
 import Dashboard from './Dashboard'
+import Landing from './Landing'
 
 
 class App extends Component {
@@ -17,7 +18,8 @@ class App extends Component {
       <Router>
         <React.Fragment>
         <Switch>
-          <Route component={Dashboard} exact path="/" />
+          <Route component={Landing} exact path="/" />
+          <Route component={Dashboard} path="/Dashboard" />
         </Switch>
         </React.Fragment>
       </Router>

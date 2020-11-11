@@ -37,9 +37,9 @@ export default class RegistrationForm extends Component {
         return(
             <Form>
                 <FormGroup>
-                    <Label>Name:</Label>
+                    <Label>Please enter your name here:</Label>
                     <Input type='text' name='voterName' id='voterName' onChange={this.handleVoterName} value={this.state.voterName} />
-                    <Button onClick={this.registerVoter} >Register</Button>
+                    <Button onClick={this.registerVoter} color='success' style={{marginTop: '5px'}} >Register</Button>
                 </FormGroup>
             </Form>
         )
