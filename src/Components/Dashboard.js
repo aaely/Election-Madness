@@ -3,8 +3,10 @@ import loadWeb3 from '../utils/loadWeb3'
 import { Link } from 'react-router-dom'
 import { BsPlus, BsFileText } from 'react-icons/bs'
 import { RiExchangeDollarFill } from 'react-icons/ri'
-import { Table, Image } from 'reactstrap'
+import { Table } from 'reactstrap'
 import { Button, Form, FormGroup, Label, Input, Row, Col, Card, CardTitle, CardText } from 'reactstrap'
+import Bitcoin from '../Images/Bitcoin.jpg'
+import Ethereum from '../Images/Ethereum.jpg'
 import getLiveCoindeskPrice from '../queries/getLiveCoindeskPrice'
 import getLiveCoinPrice from '../queries/getLiveCoinPrice'
 import getLiveETHUSD from '../queries/getLiveETHUSD'
@@ -192,6 +194,14 @@ export default class Dashboard extends Component {
                             </td>
                             <td>
                                 ${parseFloat(this.state.ethUSD).toFixed(2)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} />
+                            </td>
+                            <td>
+                                <img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} />
                             </td>
                         </tr>
                     </tbody>
