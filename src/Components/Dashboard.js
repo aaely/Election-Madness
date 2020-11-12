@@ -15,6 +15,7 @@ import Web3 from 'web3'
 import Candidates from './Candidates'
 import CandidateForm from './CandidateForm'
 import RegistrationForm from './RegistrationForm'
+import EtherLogo from '../Images/EtherLogo.png'
   
 
 
@@ -143,7 +144,7 @@ export default class Dashboard extends Component {
     render() {
         
           return(
-            <div style={{marginLeft: '5%', marginRight: '5%', marginTop: '3%'}} >
+            <div style={{marginLeft: '5%', marginRight: '5%', marginTop: '3%', backgroundImage: `url(${EtherLogo})`, backgroundPosition: 'center', backgroundSize: 'contain'}} >
                 <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Please register first if you have not. <br /> Attemping to register the same account will result in an error.</strong></h1>
                 {this.state.account === '0xBcA3320e93C54513A467Bb517dC25f9Eba15e779' && <CandidateForm election={this.state.election} account={this.state.account} />}
                 <br />

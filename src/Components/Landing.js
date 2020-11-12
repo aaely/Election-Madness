@@ -17,6 +17,7 @@ import step1 from '../Images/Step1.jpg'
 import step2 from '../Images/Step2.jpg'
 import step3 from '../Images/Step3.jpg'
 import step4 from '../Images/Step4.jpg'
+import EtherLogo from '../Images/EtherLogo.png'
   
 
 
@@ -174,7 +175,8 @@ export default class Dashboard extends Component {
                 <br />
                 <h3>Copy this value:</h3> 
                 <br />
-                <strong style={{fontSize: '30px', backgroundColor: 'yellow'}} >{this.state.account}</strong> 
+                {this.state.account !== null && this.state.account !== '' && <strong style={{fontSize: '30px', backgroundColor: 'yellow'}} >{this.state.account}</strong>}
+                {this.state.account === null || this.state.account === '' && <strong style={{fontSize: '30px', backgroundColor: 'red'}} >Your wallet is not connected. Refresh the page and try again.</strong>} 
                 <br />
                 <br />
                 <h3>into the input field to request funds!</h3>
@@ -213,7 +215,7 @@ export default class Dashboard extends Component {
     render() {
         
           return(
-            <div style={{marginLeft: '5%', marginRight: '5%', marginTop: '3%', textAlign: 'center'}} >
+            <div style={{marginLeft: '5%', marginRight: '5%', marginTop: '3%', textAlign: 'center', backgroundImage: `url(${EtherLogo})`, backgroundPosition: 'center', backgroundSize: 'contain'}} >
                 <h1 style={{textAlign: 'center'}}>Welcome to Election-Madness</h1>
                 <br />
                 <h3>This app will allow a user to cast a vote to be tallied on the Ethereum Blockchain</h3>
