@@ -104,11 +104,6 @@ export default class Dashboard extends Component {
         console.log(this.state)
       }
 
-    isAccountRegistered = async () => {
-        const response = await this.state.election.methods.regVoters(this.state.account).send({from: this.state.account})
-        console.log(response)
-    }
-
     renderMetamaskLink = () => {
         return(
             <span style={{textAlign: 'center', backgroundColor: 'red', fontSize: '24px'}} >
@@ -152,17 +147,21 @@ export default class Dashboard extends Component {
                 <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Please register first if you have not. <br /> Attemping to register the same account will result in an error.</strong></h1>
                 {this.state.account === '0xBcA3320e93C54513A467Bb517dC25f9Eba15e779' && <CandidateForm election={this.state.election} account={this.state.account} />}
                 <br />
-                <h3><a href='https://goerli-faucet.slock.it/' target='_blank' ref='noreferrer'> Need More Funds?</a></h3>
+                <h3 style={{textAlign: 'center'}} ><a href='https://goerli-faucet.slock.it/' target='_blank' ref='noreferrer'> Need More Funds?</a></h3>
                 <br />
                 <RegistrationForm election={this.state.election} account={this.state.account} />
                 <br />
+                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>After registering, you will need a transaction confirmation before you can vote. </strong>
+                <strong>This takes about 30 seconds </strong><br /></h1>
                 <Candidates candidates={this.state.candidates} election={this.state.election} account={this.state.account} />
                 <br />
+                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>After registering, you will need a transaction confirmation before you can vote. </strong>
+                <strong>This takes about 30 seconds</strong></h1><br />
                 <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Attempting to vote without registering will result in an error. <br />
                 Attempting to vote more than once will also result in an error. <br />
                 </strong></h1>
                 <br />
-                <h3 style={{textAlign: 'center', marginTop: '10%'}}><strong>Tip Addresses</strong></h3>
+                <h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>
                 {this.renderTipTable()}
             </div>
         )
