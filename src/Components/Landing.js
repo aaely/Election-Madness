@@ -44,15 +44,11 @@ export default class Dashboard extends Component {
             this.setState({
                 account, networkId
             })
-            const coinDeskPrice = await getLiveCoindeskPrice();
-            this.setState({
-                coinDeskPrice
-            })
-            /*const bitcoinPrice = await getLiveCoinPrice();
+            const bitcoinPrice = await getLiveCoinPrice();
             const ethereumPrice = await getLiveETHUSD();
             this.setState({
                 bitcoinPrice, ethereumPrice
-            })*/
+            })
         }
         catch(error) {
             console.log(error);
@@ -97,10 +93,10 @@ export default class Dashboard extends Component {
                 <h3>Android: <a href='https://play.google.com/store/apps/details?id=org.toshi' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}}>Coinbase Wallet for Android</a></h3>
                 <h3>iPhone: <a href='https://apps.apple.com/us/app/coinbase-wallet/id1278383455' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}}>Coinbase Wallet for iPhone</a></h3>
                 <h5>You will need to get the wallet set up, create a pin, either back up the phrase or not, etc. Once complete, you will need to do the following:</h5>
-                <h3>Step 1: <img src={step1} alt='step1' style={{maxHeight: '400px', maxWidth: '250px', marginLeft: 'auto', marginRight: 'auto'}} /></h3>
-                <h3>Step 2: <img src={step2} alt='step2' style={{maxHeight: '400px', maxWidth: '250px', marginLeft: 'auto', marginRight: 'auto'}} /></h3>
-                <h3>Step 3: <img src={step3} alt='step3' style={{maxHeight: '400px', maxWidth: '250px', marginLeft: 'auto', marginRight: 'auto'}} /></h3>
-                <h3>Step 4: <img src={step4} alt='step4' style={{maxHeight: '400px', maxWidth: '250px', marginLeft: 'auto', marginRight: 'auto'}} /></h3>
+                <h3>Step 1: <img src={step1} alt='step1' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
+                <h3>Step 2: <img src={step2} alt='step2' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
+                <h3>Step 3: <img src={step3} alt='step3' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
+                <h3>Step 4: <img src={step4} alt='step4' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
                 <h3 style={{backgrounColor: 'red'}}>After setting the active network to Gorli, you will need to refresh the page</h3>
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
                 <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginTop: '10px'}} >I Have Coinbase Wallet</Button>
@@ -115,7 +111,7 @@ export default class Dashboard extends Component {
                 <br />
                 <a href='https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}} >MetaMask</a>
                 <br />
-                <img src={img1} alt='Metamask' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
+                <img src={img1} alt='Metamask' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px', maxWidth: window.screen.availWidth}} />
                 <br />
                 <h3 style={{marginTop: '10px', backgroundColor: 'red'}} >If you do not have a wallet phrase to import, just create a new wallet.</h3>
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
@@ -144,11 +140,11 @@ export default class Dashboard extends Component {
                 {this.state.networkId !== 5 && <h3 style={{backgroundColor: 'red'}} >You are not connected to the correct network <br /> Please connect to the Goerli network and refresh the page</h3>}
                 <h5>Step 1:</h5>
                 <br />
-                <img src={img2} alt='Metamask 2' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
+                <img src={img2} alt='Metamask 2' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px', maxWidth: window.screen.availWidth}} />
                 <br />
                 <h5>Step 2:</h5>
                 <br />
-                <img src={img3} alt='Metamask 3' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px'}} />
+                <img src={img3} alt='Metamask 3' style={{marginLeft: 'auto', marginRight: 'auto', borderStyle: 'solid', borderColor: 'black', borderWidth: '3px', marginTop: '10px', maxWidth: window.screen.availWidth}} />
                 <br />
                 <h3 style={{backgroundColor: 'red', marginTop: '5px'}} >You are currently not connected to the Goerli Network, please follow the above instructions and refresh the page</h3>
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
@@ -199,12 +195,12 @@ export default class Dashboard extends Component {
                 <tbody>
                     <tr>
                         <td>BTC</td>
-                        <td><img src={Bitcoin} alt='bitcoin' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
+                        <td><img src={Bitcoin} alt='bitcoin' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', maxWidth: window.screen.availWidth}} /></td>
                         <td> ${this.state.bitcoinPrice} </td>
                     </tr>
                     <tr>
                         <td>ETH</td>
-                        <td><img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
+                        <td><img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', maxWidth: window.screen.availWidth}} /></td>
                         <td> ${this.state.ethereumPrice} </td>
                     </tr>
                 </tbody>
