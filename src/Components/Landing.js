@@ -172,7 +172,7 @@ export default class Dashboard extends Component {
                 <h3>Copy this value:</h3> 
                 <br />
                 {this.state.account !== null && this.state.account !== '' && <strong style={{fontSize: '30px', backgroundColor: 'yellow'}} >{this.state.account}</strong>}
-                {this.state.account === null || this.state.account === '' && <strong style={{fontSize: '30px', backgroundColor: 'red'}} >Your wallet is not connected. Refresh the page and try again.</strong>} 
+                {this.state.account === '' && <strong style={{fontSize: '30px', backgroundColor: 'red'}} >Your wallet is not connected. Refresh the page and try again.</strong>} 
                 <br />
                 <br />
                 <h3>into the input field to request funds!</h3>
