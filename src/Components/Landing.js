@@ -170,16 +170,16 @@ export default class Dashboard extends Component {
     renderLink = () => {
         return(
             <div style={{textAlign: 'center', justifyContent: 'center'}} >
-                <h3>You will need funds in order to register, and to vote. Funds can be acquired here:</h3> 
-                <h1><a href='https://goerli-faucet.slock.it/' target='_blank' rel="noreferrer"  >Goerli Faucet</a></h1>
-                <br />
                 <h3>Copy this value:</h3> 
                 <br />
                 {this.state.account !== null && this.state.account !== '' && <strong style={{fontSize: '30px', backgroundColor: 'yellow'}} >{this.state.account}</strong>}
+                {this.state.account === null && <strong style={{fontSize: '30px', backgroundColor: 'red'}} >Your wallet is not connected. Refresh the page and try again.</strong>} 
                 {this.state.account === '' && <strong style={{fontSize: '30px', backgroundColor: 'red'}} >Your wallet is not connected. Refresh the page and try again.</strong>} 
                 <br />
                 <br />
-                <h3>into the input field to request funds!</h3>
+                <h3>into the input field on the page of the below link to request funds!</h3>
+                <h1><a href='https://goerli-faucet.slock.it/' target='_blank' rel="noreferrer"  >Goerli Faucet</a></h1>
+                <br />
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginTop: '5px', marginRight: '5px', marginLeft: '5px'}} >Go Back</Button>
                 <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginTop: '5px', marginRight: '5px', marginLeft: '5px'}} >I Have Funds</Button>
             </div>
