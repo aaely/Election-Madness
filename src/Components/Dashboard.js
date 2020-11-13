@@ -37,7 +37,8 @@ export default class Dashboard extends Component {
             voterCount: 0,
             tabId: 0,
             isRegistered: false,
-            loading: false
+            loading: false,
+            voted: false
         }
     }
 
@@ -46,11 +47,13 @@ export default class Dashboard extends Component {
             await loadWeb3();
             await this.loadBlockchainData();
             const isRegistered = await this.isAccountRegistered();
+            const hasVoted = await this.hasVoted();
             /*const coindeskPrice = await getLiveCoindeskPrice();
             const coinapiPrice = await getLiveCoinPrice();
             const ethUSD = await getLiveETHUSD();*/
             this.setState({
-                isRegistered
+                isRegistered,
+                hasVoted
             })
             /*this.setState({
                 coindeskPrice,
@@ -113,6 +116,11 @@ export default class Dashboard extends Component {
         return response
     }
 
+    hasVoted = async () => {
+        const response = await this.state.election.methods.voted(this.state.account).call()
+        return response
+    }
+
     updateStatus = (status) => {
         setTimeout(() => { this.setState({isRegistered: status, loading: !this.state.loading}); }, 100);
     }
@@ -120,6 +128,12 @@ export default class Dashboard extends Component {
     handleLoading = () => {
         this.setState({
             loading: !this.state.loading
+        })
+    }
+
+    handleHasVoted = () => {
+        this.setState({
+            hasVoted: !this.state.hasVoted
         })
     }
 
@@ -149,9 +163,9 @@ export default class Dashboard extends Component {
                 <br />
                 <h3 style={{textAlign: 'center'}} ><a href='https://goerli-faucet.slock.it/' target='_blank' ref='noreferrer'> Need More Funds?</a></h3>
                 <br />
-                {this.state.isRegistered === false && <RegistrationForm election={this.state.election} account={this.state.account} action1={this.updateStatus} />}
+                {this.state.isRegistered === false && <RegistrationForm election={this.state.election} account={this.state.account} action1={this.updateStatus} action2={this.handleLoading} />}
                 <br />
-                {this.state.isRegistered === true && <Candidates candidates={this.state.candidates} election={this.state.election} account={this.state.account} action1={this.handleLoading} />}
+                {this.state.isRegistered === true && <Candidates candidates={this.state.candidates} election={this.state.election} hasVoted={this.state.hasVoted} account={this.state.account} action1={this.handleLoading} action2={this.handleHasVoted} />}
                 <br />
                 {/*<h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>*/}
                 {/*this.renderTipTable()*/}

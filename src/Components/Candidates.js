@@ -21,6 +21,7 @@ export default class Candidates extends Component {
 
     castVote = async (candidateId) => {
         try {
+            setTimeout(() => { this.props.action1(); }, 3000);
             await this.props.election.methods.castVote(candidateId).send({from: this.props.account})
             window.location.reload()
         } catch(error) {
@@ -43,7 +44,8 @@ export default class Candidates extends Component {
                                         
                                         <CardText>{a.voteCount}</CardText>
 
-                                        <Button onClick={this.castVote.bind(this, a.id)} color='success' >Vote for me!</Button>
+                                        {this.props.hasVoted === false && <Button onClick={this.castVote.bind(this, a.id)} color='success' >Vote for me!</Button>}
+                                        {this.props.hasVoted === true && <Button onClick='#' >You Voted Foo!</Button>}
                                     </Card>
                                     
                                 </Col>
