@@ -22,6 +22,7 @@ export default class Candidates extends Component {
     castVote = async (candidateId) => {
         try {
             await this.props.election.methods.castVote(candidateId).send({from: this.props.account})
+            window.location.reload()
         } catch(error) {
             console.log(error)
         }
@@ -30,6 +31,7 @@ export default class Candidates extends Component {
     render() {
         return(
             <div>
+                <h1 style={{textAlign: 'center', marginBottom: '5%'}} >Cast your vote here!</h1>
                 {this.props.candidates.map(a => {
                         return(
                             <Row style={{display: 'inline-block', marginLeft: '10%', marginRight: '10%'}} >
@@ -41,7 +43,7 @@ export default class Candidates extends Component {
                                         
                                         <CardText>{a.voteCount}</CardText>
 
-                                        <Button onClick={this.castVote.bind(this, a.id)} >Vote for me!</Button>
+                                        <Button onClick={this.castVote.bind(this, a.id)} color='success' >Vote for me!</Button>
                                     </Card>
                                     
                                 </Col>

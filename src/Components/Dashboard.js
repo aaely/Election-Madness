@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { BsPlus, BsFileText } from 'react-icons/bs'
 import { RiExchangeDollarFill } from 'react-icons/ri'
 import { Table } from 'reactstrap'
+import Loader from './Loader'
 import { Button, Form, FormGroup, Label, Input, Row, Col, Card, CardTitle, CardText } from 'reactstrap'
 import Bitcoin from '../Images/Bitcoin.jpg'
 import Ethereum from '../Images/Ethereum.jpg'
@@ -34,22 +35,28 @@ export default class Dashboard extends Component {
             election: null,
             candidateCount: 0,
             voterCount: 0,
-            tabId: 0
+            tabId: 0,
+            isRegistered: false,
+            loading: false
         }
     }
 
     async componentDidMount() {
         try {
-            await this.loadWeb3();
+            await loadWeb3();
             await this.loadBlockchainData();
-            const coindeskPrice = await getLiveCoindeskPrice();
+            const isRegistered = await this.isAccountRegistered();
+            /*const coindeskPrice = await getLiveCoindeskPrice();
             const coinapiPrice = await getLiveCoinPrice();
-            const ethUSD = await getLiveETHUSD();
+            const ethUSD = await getLiveETHUSD();*/
             this.setState({
+                isRegistered
+            })
+            /*this.setState({
                 coindeskPrice,
                 coinapiPrice,
                 ethUSD
-            })
+            })*/
         }
         catch(error) {
             console.log(error);
@@ -58,19 +65,6 @@ export default class Dashboard extends Component {
             })
         }
     }
-
-    async loadWeb3() {
-        if (window.ethereum) {
-          window.web3 = new Web3(window.ethereum)
-          await window.ethereum.enable()
-        }
-        else if (window.web3) {
-          window.web3 = new Web3(window.web3.currentProvider)
-        }
-        else {
-          window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-        }
-      }
 
     async loadBlockchainData() {
         const web3 = window.web3
@@ -114,12 +108,19 @@ export default class Dashboard extends Component {
         )
     }
 
-    renderLink = () => {
-        return(
-            <span style={{textAlign: 'center', backgroundColor: 'red', fontSize: '24px'}} >
-                No funds to register or vote? Go <a href='https://goerli-faucet.slock.it/' target='_blank' style={{backgroundColor: 'black', color: 'yellow'}} >here</a> and copy this value-- <strong style={{fontSize: '30px'}} >{this.state.account}</strong>-- into the input field to request funds!
-            </span>
-        )
+    isAccountRegistered = async () => {
+        const response = await this.state.election.methods.regVoters(this.state.account).call()
+        return response
+    }
+
+    updateStatus = (status) => {
+        setTimeout(() => { this.setState({isRegistered: status, loading: !this.state.loading}); }, 100);
+    }
+
+    handleLoading = () => {
+        this.setState({
+            loading: !this.state.loading
+        })
     }
 
     renderTipTable = () => {
@@ -140,33 +141,31 @@ export default class Dashboard extends Component {
             </Table>
         )
     }
-    
-    render() {
-        
-          return(
+
+    renderMainContent() {
+        return(
             <div style={{marginLeft: '5%', marginRight: '5%', marginTop: '3%', backgroundImage: `url(${EtherLogo})`, backgroundPosition: 'center', backgroundSize: 'contain'}} >
-                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Please register first if you have not. <br /> Attemping to register the same account will result in an error.</strong></h1>
                 {this.state.account === '0xBcA3320e93C54513A467Bb517dC25f9Eba15e779' && <CandidateForm election={this.state.election} account={this.state.account} />}
                 <br />
                 <h3 style={{textAlign: 'center'}} ><a href='https://goerli-faucet.slock.it/' target='_blank' ref='noreferrer'> Need More Funds?</a></h3>
                 <br />
-                <RegistrationForm election={this.state.election} account={this.state.account} />
+                {this.state.isRegistered === false && <RegistrationForm election={this.state.election} account={this.state.account} action1={this.updateStatus} />}
                 <br />
-                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>After registering, you will need a transaction confirmation before you can vote. </strong>
-                <strong>This takes about 30 seconds </strong><br /></h1>
-                <Candidates candidates={this.state.candidates} election={this.state.election} account={this.state.account} />
+                {this.state.isRegistered === true && <Candidates candidates={this.state.candidates} election={this.state.election} account={this.state.account} action1={this.handleLoading} />}
                 <br />
-                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>After registering, you will need a transaction confirmation before you can vote. </strong>
-                <strong>This takes about 30 seconds</strong></h1><br />
-                <h1 style={{backgroundColor: 'red', fontSize: '50px'}} ><strong>Attempting to vote without registering will result in an error. <br />
-                Attempting to vote more than once will also result in an error. <br />
-                </strong></h1>
-                <br />
-                <h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>
-                {this.renderTipTable()}
+                {/*<h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>*/}
+                {/*this.renderTipTable()*/}
             </div>
         )
     }
-
-
+    
+    render() {
+          return(
+            <div>
+                {this.state.loading === false && this.renderMainContent()}
+                {this.state.loading === true && <span style={{marginTop: '5%', textAlign: 'center'}}><h1>Please wait for your transaction to confirm...</h1></span>}
+                {this.state.loading === true && <Loader />}
+            </div>
+        )
+    }
 }

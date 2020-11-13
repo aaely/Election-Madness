@@ -10,6 +10,7 @@ import {
 
 import Dashboard from './Dashboard'
 import Landing from './Landing'
+import Loader from './Loader'
 
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
         <Switch>
           <Route component={Landing} exact path="/" />
           <Route component={Dashboard} path="/Dashboard" />
+          <Route component={Loader} path="/loader" />
         </Switch>
         </React.Fragment>
       </Router>

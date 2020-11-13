@@ -167,7 +167,7 @@ export default class Dashboard extends Component {
         return(
             <div style={{textAlign: 'center', justifyContent: 'center'}} >
                 <h3>You will need funds in order to register, and to vote. Funds can be acquired here:</h3> 
-                <a href='https://goerli-faucet.slock.it/' target='_blank' rel="noreferrer" style={{fontSize: '24px'}} >Goerli Faucet</a>
+                <h1><a href='https://goerli-faucet.slock.it/' target='_blank' rel="noreferrer"  >Goerli Faucet</a></h1>
                 <br />
                 <h3>Copy this value:</h3> 
                 <br />
