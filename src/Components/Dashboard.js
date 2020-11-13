@@ -5,6 +5,7 @@ import { BsPlus, BsFileText } from 'react-icons/bs'
 import { RiExchangeDollarFill } from 'react-icons/ri'
 import { Table } from 'reactstrap'
 import Loader from './Loader'
+import VotedFor from './VotedFor'
 import { Button, Form, FormGroup, Label, Input, Row, Col, Card, CardTitle, CardText } from 'reactstrap'
 import Bitcoin from '../Images/Bitcoin.jpg'
 import Ethereum from '../Images/Ethereum.jpg'
@@ -38,7 +39,7 @@ export default class Dashboard extends Component {
             tabId: 0,
             isRegistered: false,
             loading: false,
-            voted: false
+            hasVoted: false
         }
     }
 
@@ -48,12 +49,16 @@ export default class Dashboard extends Component {
             await this.loadBlockchainData();
             const isRegistered = await this.isAccountRegistered();
             const hasVoted = await this.hasVoted();
+            const voterId = this.getVoterId();
+            const candidateId = this.getCandidateId()
             /*const coindeskPrice = await getLiveCoindeskPrice();
             const coinapiPrice = await getLiveCoinPrice();
             const ethUSD = await getLiveETHUSD();*/
             this.setState({
                 isRegistered,
-                hasVoted
+                hasVoted,
+                voterId,
+                candidateId
             })
             /*this.setState({
                 coindeskPrice,
@@ -111,6 +116,22 @@ export default class Dashboard extends Component {
         )
     }
 
+    getCandidateId = () => {
+        let array = this.state.voters.filter(prop => {
+            return prop.voter.includes(`${this.state.account}`)
+        })
+        console.log(array[0].votedFor)
+        return array[0].votedFor
+    }
+
+    getVoterId = () => {
+        let array = this.state.voters.filter(prop => {
+            return prop.voter.includes(`${this.state.account}`)
+        })
+        console.log(array[0].id)
+        return array[0].id
+    }
+
     isAccountRegistered = async () => {
         const response = await this.state.election.methods.regVoters(this.state.account).call()
         return response
@@ -165,8 +186,9 @@ export default class Dashboard extends Component {
                 <br />
                 {this.state.isRegistered === false && <RegistrationForm election={this.state.election} account={this.state.account} action1={this.updateStatus} action2={this.handleLoading} />}
                 <br />
-                {this.state.isRegistered === true && <Candidates candidates={this.state.candidates} election={this.state.election} hasVoted={this.state.hasVoted} account={this.state.account} action1={this.handleLoading} action2={this.handleHasVoted} />}
-                <br />
+                {this.state.isRegistered === true && this.state.hasVoted === false && <Candidates candidates={this.state.candidates} voterId={this.state.voterId} election={this.state.election} hasVoted={this.state.hasVoted} account={this.state.account} action1={this.handleLoading} action2={this.handleHasVoted} />}
+                <br />         
+                {this.state.hasVoted === true && <VotedFor candidateId={this.state.candidateId} Candidates={this.state.candidates} />}
                 {/*<h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>*/}
                 {/*this.renderTipTable()*/}
             </div>

@@ -17,6 +17,8 @@ import step1 from '../Images/Step1.jpg'
 import step2 from '../Images/Step2.jpg'
 import step3 from '../Images/Step3.jpg'
 import step4 from '../Images/Step4.jpg'
+import step5 from '../Images/Step5.jpg'
+import step6 from '../Images/Step6.jpg'
 import EtherLogo from '../Images/EtherLogo.png'
   
 
@@ -93,10 +95,12 @@ export default class Dashboard extends Component {
                 <h3>Android: <a href='https://play.google.com/store/apps/details?id=org.toshi' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}}>Coinbase Wallet for Android</a></h3>
                 <h3>iPhone: <a href='https://apps.apple.com/us/app/coinbase-wallet/id1278383455' target='_blank' rel="noreferrer" style={{fontSize: '24px', marginBottom: '10px'}}>Coinbase Wallet for iPhone</a></h3>
                 <h5>You will need to get the wallet set up, create a pin, either back up the phrase or not, etc. Once complete, you will need to do the following:</h5>
-                <h3>Step 1: <img src={step1} alt='step1' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
-                <h3>Step 2: <img src={step2} alt='step2' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
-                <h3>Step 3: <img src={step3} alt='step3' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
-                <h3>Step 4: <img src={step4} alt='step4' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} /></h3>
+                <h3>Step 1: </h3><img src={step1} alt='step1' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} />
+                <h3>Step 2: </h3><img src={step2} alt='step2' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} />
+                <h3>Step 3: </h3><img src={step3} alt='step3' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} />
+                <h3>Step 4: </h3><img src={step4} alt='step4' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} />
+                <h3>Step 5: </h3><img src={step5} alt='step5' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} />
+                <h3>Step 6: </h3><img src={step6} alt='step6' style={{maxHeight: '400px', maxWidth: window.screen.availWidth, marginLeft: 'auto', marginRight: 'auto'}} />
                 <h3 style={{backgrounColor: 'red'}}>After setting the active network to Gorli, you will need to refresh the page</h3>
                 <Button onClick={this.decrementTab} color='danger' style={{margin: '0 auto', marginRight: '5px', marginLeft: '5px', marginTop: '5px'}} >Go Back</Button>
                 <Button onClick={this.incrementTab} color='success' style={{margin: '0 auto', marginTop: '10px'}} >I Have Coinbase Wallet</Button>
