@@ -1,23 +1,18 @@
 import React, { Component } from 'react'
 import loadWeb3 from '../utils/loadWeb3'
-import { Link } from 'react-router-dom'
-import { BsPlus, BsFileText } from 'react-icons/bs'
-import { RiExchangeDollarFill } from 'react-icons/ri'
 import { Table } from 'reactstrap'
 import Loader from './Loader'
 import VotedFor from './VotedFor'
-import { Button, Form, FormGroup, Label, Input, Row, Col, Card, CardTitle, CardText } from 'reactstrap'
 import Bitcoin from '../Images/Bitcoin.jpg'
 import Ethereum from '../Images/Ethereum.jpg'
 import getLiveCoindeskPrice from '../queries/getLiveCoindeskPrice'
-import getLiveCoinPrice from '../queries/getLiveCoinPrice'
 import getLiveETHUSD from '../queries/getLiveETHUSD'
 import Election from '../abis/Election.json'
-import Web3 from 'web3'
 import Candidates from './Candidates'
 import CandidateForm from './CandidateForm'
 import RegistrationForm from './RegistrationForm'
 import EtherLogo from '../Images/EtherLogo.png'
+import MyPieChart from './Graphs'
   
 
 
@@ -38,38 +33,51 @@ export default class Dashboard extends Component {
             voterCount: 0,
             tabId: 0,
             isRegistered: false,
-            loading: false,
-            hasVoted: false
+            loading: true,
+            hasVoted: false,
+            totalVotes: 0,
+            bidenVotes: 0,
+            trumpVotes: 0,
+            joVotes: 0,
+            showMessage: false
         }
     }
 
     async componentDidMount() {
         try {
+            //this.setState({ loading: true })
             await loadWeb3();
             await this.loadBlockchainData();
             const isRegistered = await this.isAccountRegistered();
-            const hasVoted = await this.hasVoted();
-            const voterId = this.getVoterId();
-            const candidateId = this.getCandidateId()
-            /*const coindeskPrice = await getLiveCoindeskPrice();
-            const coinapiPrice = await getLiveCoinPrice();
-            const ethUSD = await getLiveETHUSD();*/
+            if(isRegistered) {
+                const voterId = this.getVoterId()
+                this.setState({ isRegistered, voterId })
+                const hasVoted = await this.hasVoted();
+                if(hasVoted) {
+                    const candidateId = this.getCandidateId();
+                    this.setState({ hasVoted, candidateId })
+                }
+            }
             this.setState({
-                isRegistered,
-                hasVoted,
-                voterId,
-                candidateId
+                bidenVotes: this.state.candidates[0].voteCount,
+                trumpVotes: this.state.candidates[1].voteCount,
+                joVotes: this.state.candidates[2].voteCount
             })
-            /*this.setState({
-                coindeskPrice,
-                coinapiPrice,
+            const coindeskPrice = await getLiveCoindeskPrice();
+            this.setState({
+                coindeskPrice
+            })
+            //const coinapiPrice = await getLiveCoinPrice();
+            const ethUSD = await getLiveETHUSD();
+            this.setState({
                 ethUSD
-            })*/
+            })
+            this.setState({ loading: false })
         }
         catch(error) {
             console.log(error);
             this.setState({
-                loadingItems: false
+                loading: false
             })
         }
     }
@@ -81,16 +89,15 @@ export default class Dashboard extends Component {
         this.setState({ account: accounts[0] })
         // Network ID
         const networkId = await web3.eth.net.getId()
-        console.log(networkId)
         //const networkData = SocialNetwork.networks[networkId]
         const networkData = Election.networks[networkId]
         if(networkData) {
           const election = new web3.eth.Contract(Election.abi, networkData.address)
-          console.log(election)
           this.setState({ election })
           const voterCount = await election.methods.voterCount().call()
           const candidateCount = await election.methods.candidateCount().call()
-          this.setState({ voterCount, candidateCount })
+          const totalVotes = await election.methods.totalVotes().call()
+          this.setState({ voterCount, candidateCount, totalVotes })
           for(let i = 1; i <= candidateCount; i++) {
               const candidate = await election.methods.candidates(i).call()
               this.setState({ candidates: [...this.state.candidates, candidate]})
@@ -104,7 +111,6 @@ export default class Dashboard extends Component {
         } else {
           window.alert('Election contract not deployed to detected network.')
         }
-        console.log(this.state)
       }
 
     renderMetamaskLink = () => {
@@ -129,7 +135,9 @@ export default class Dashboard extends Component {
             return prop.voter.includes(`${this.state.account}`)
         })
         console.log(array[0].id)
-        return array[0].id
+            if (array[0].id.length > 0) {
+            return array[0].id
+        }
     }
 
     isAccountRegistered = async () => {
@@ -148,7 +156,8 @@ export default class Dashboard extends Component {
 
     handleLoading = () => {
         this.setState({
-            loading: !this.state.loading
+            loading: !this.state.loading,
+            showMessage: !this.state.showMessage
         })
     }
 
@@ -168,6 +177,14 @@ export default class Dashboard extends Component {
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td>
+                            ${this.state.coindeskPrice}
+                        </td>
+                        <td>
+                            ${this.state.ethUSD}
+                        </td>
+                    </tr>
                     <tr>
                         <td><img src={Bitcoin} alt='bitcoin' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
                         <td><img src={Ethereum} alt='ethereum' style={{marginLeft: 'auto', marginRight: 'auto', marginTop: '10px', height: '20%', width: '20%'}} /></td>
@@ -189,8 +206,8 @@ export default class Dashboard extends Component {
                 {this.state.isRegistered === true && this.state.hasVoted === false && <Candidates candidates={this.state.candidates} voterId={this.state.voterId} election={this.state.election} hasVoted={this.state.hasVoted} account={this.state.account} action1={this.handleLoading} action2={this.handleHasVoted} />}
                 <br />         
                 {this.state.hasVoted === true && <VotedFor candidateId={this.state.candidateId} Candidates={this.state.candidates} />}
-                {/*<h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>*/}
-                {/*this.renderTipTable()*/}
+                {<h3 style={{textAlign: 'center', marginTop: '5%'}}><strong>Tip Addresses</strong></h3>}
+                {this.renderTipTable()}
             </div>
         )
     }
@@ -198,8 +215,9 @@ export default class Dashboard extends Component {
     render() {
           return(
             <div>
+                {this.state.loading === false && <MyPieChart bidenVotes={this.state.bidenVotes} trumpVotes={this.state.trumpVotes} joVotes={this.state.joVotes} totalVotes={this.state.totalVotes} /> }
                 {this.state.loading === false && this.renderMainContent()}
-                {this.state.loading === true && <span style={{marginTop: '5%', textAlign: 'center'}}><h1>Please wait for your transaction to confirm...</h1></span>}
+                {this.state.loading === true && this.state.showMessage === true && <span style={{marginTop: '5%', textAlign: 'center'}}><h1>Please wait for your transaction to confirm...</h1></span>}
                 {this.state.loading === true && <Loader />}
             </div>
         )
